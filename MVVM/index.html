@@ -11,7 +11,7 @@
     <div id="app">
         <div v-text="msg"></div>
         <div v-text="person.name"></div>
-        <div v-html="msg"></div>
+        <div v-html="htmlStr"></div>
         <div>{{msg}}</div>
         <input type="text" v-model="msg">
         <button v-on:click='handlerClick'>点击</button>
@@ -26,11 +26,13 @@
                 person: {
                     name: '姓名'
                 },
-                msg: 'MVVM实现原理'
+                msg: 'MVVM实现原理',
+                htmlStr: 'htmlStr'
             },
             methods: {
                 handlerClick() {
                     console.log('hahaha');
+                    this.$data.person.name = '学习MVVM';
                 },
                 handlerClick2() {
                     console.log('hahaha22222');
