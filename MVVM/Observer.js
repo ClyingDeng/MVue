@@ -21,9 +21,8 @@ class Watcher {
 }
 class Dep {//依赖收集器
     constructor() {
-        this.subs = [];
+        this.subs = [];//收集观察者
     }
-    //收集观察者
     addSub(watcher) {
         this.subs.push(watcher);
     }

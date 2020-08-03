@@ -6,9 +6,12 @@ const compileUtil = {
             return data[currentVal];
         }, vm.$data);
     },
-    setVal(expr, vm, inputVal) {
-        return expr.split('.').reduce((data, currentVal) => {
-            data[currentVal] = inputVal;
+    setVal(expr, vm, inputVal) {//'person.name' vm.$data 
+        expr.split('.').reduce((data, currentVal, index, arr) => {
+            if (index == arr.length - 1) {
+                return data[currentVal] = inputVal;
+            }
+            return data[currentVal]
         }, vm.$data);
     },
     getContentVal(expr, vm) {
@@ -46,7 +49,7 @@ const compileUtil = {
         })
         //视图=>数据=>视图
         node.addEventListener('input', (e) => {
-            //设置值
+            //设置值 e.target.value用户输入的内容
             this.setVal(expr, vm, e.target.value);
         })
         this.updater.modelUpdater(node, value);
@@ -62,7 +65,7 @@ const compileUtil = {
         textUpdater(node, value) {
             node.textContent = value;
         },
-        htmlUpdater(node, value) {
+        htmlUpdater(node, value) {  //xss攻击
             node.innerHTML = value;
         },
         modelUpdater(node, value) {
@@ -75,6 +78,7 @@ const compileUtil = {
 class Compile {
     constructor(el, vm) {
         // console.log(el);
+        //判断el属性 是不是一个元素 如果不是元素 那就获取他
         this.el = this.isElementNode(el) ? el : document.querySelector(el);
         this.vm = vm;
         // 1.获取文档碎片对象，放入内存中会减少页面的重绘和重排
@@ -149,7 +153,6 @@ class Compile {
         return f;
     }
     isElementNode(node) {
-
         return node.nodeType === 1;
     }
 }
@@ -158,17 +161,28 @@ class MVue {
         this.$el = options.el;
         this.$data = options.data;
         this.$options = options;
+        let computed = options.computed;
         if (this.$el) {
             //1.实现数据观察者
             new Observer(this.$data);
+
+            //计算属性
+            // console.log(computed);
+            for (let key in computed) { //有依赖关系
+                Object.defineProperty(this.$data, key, {
+                    get: () => {
+                        return computed[key].call(this);
+                    }
+                })
+            }
+            this.proxyData(this.$data);
             //2.实现指令解析器
             new Compile(this.$el, this);
-            this.proxyData(this.$data);
         }
     }
     proxyData(data) {
         for (const key in data) {
-            Object.defineProperty(this, key, {
+            Object.defineProperty(this, key, {  //实现可以通过vm取到对应的内容
                 get() {
                     return data[key];
                 },

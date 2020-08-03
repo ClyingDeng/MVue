@@ -14,9 +14,10 @@
         <div>{{person.name}}</div>
         <div v-html="htmlStr"></div>
         <div>{{msg}}</div>
-        <input type="text" v-model="msg">
-        <button v-on:click='handlerClick'>点击</button>
+        <input type="text" v-model="person.name">
+        <button v-on:click='handlerClick'>点击更新</button>
         <button @click='handlerClick2'>点击2</button>
+        <div>{{getNewName}}</div>
     </div>
     <script src="./MVue.js"></script>
     <script src="./Observer.js"></script>
@@ -25,10 +26,16 @@
             el: '#app',
             data: {
                 person: {
-                    name: '姓名'
+                    name: '姓名',
+                    sex: '女'
                 },
                 msg: 'MVVM实现原理',
                 htmlStr: 'htmlStr'
+            },
+            computed: {
+                getNewName() {
+                    return this.person.name + '架构'
+                }
             },
             methods: {
                 handlerClick() {
