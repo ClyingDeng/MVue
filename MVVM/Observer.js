@@ -21,9 +21,8 @@ class Watcher {
 }
 class Dep {//依赖收集器
     constructor() {
-        this.subs = [];
+        this.subs = [];//收集观察者
     }
-    //收集观察者
     addSub(watcher) {
         this.subs.push(watcher);
     }
@@ -37,7 +36,7 @@ class Observer {
     constructor(data) {
         this.observer(data);
     }
-    observer(data) {
+    observer(data) {    //遍历属性，劫持并监听
         //data为数据
         if (data && typeof data === 'object') {
             Object.keys(data).forEach(key => {
@@ -54,6 +53,7 @@ class Observer {
             enumerable: true,//可枚举性，表示能否通过for-in遍历得到属性。默认值为true。
             configurable: false,//可配置性，控制着其描述的属性的修改，表示能否修改属性的特性，能否把属性修改为访问器属性，或者能否通过delete删除属性从而重新定义属性。默认值为true。
             get() {
+                //初始化
                 //订阅者数据变化时，往Dep中添加观察者
                 Dep.target && dep.addSub(Dep.target);
                 return value;
