@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取值表达式</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <template v-for="i in fruits">
+            <div :key="i+'_1'" :a="i+'_1'">{{i}}</div>
+            <div :key="`${i}_2`" :a="`${i}_2`">{{i}}</div>
+        </template>
+
+
+        <div v-if="flag">
+            <span>jj</span>
+            <!--
+                vue在重新渲染的时候，会比较两者差异，输入框都是input且无法区分则不会更新
+                需要给input加上key表示两个input不同 
+                key可以区分元素
+            -->
+            <input type="text" key="1">
+        </div>
+        <div v-else>
+            <span>dd</span>
+            <input type="text" key="2">
+        </div>
+
+
+        <ul>
+
+            <!-- <li key='0'>🍌</li>
+            <li key='1'>🍎</li>
+            <li key='2'>🍓</li> -->
+            <!-- 倒序：index为key 增删改，会产生不必要消耗 -->
+            <li key='0'>🍓</li>
+            <li key='1'>🍎</li>
+            <li key='2'>🍌</li>
+            <!-- 倒序：index为唯一标识 key里面内容不变 -->
+            <li key='cao'>🍓</li>
+            <li key='ping'>🍎</li>
+            <li key='xiang'>🍌</li>
+        </ul>
+
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // var num = 1;
+        // let obj = {
+        //     num: 2,
+        //     add: function () {
+        //         console.log(this.num);
+        //         this.num = 3;   //obj
+        //         (function () {
+        //             console.log(this.num);  //  立即执行函数全局
+        //             this.num = 4;
+        //         })();
+        //         console.log(this.num);
+        //     },
+        //     sub: function () {
+        //         console.log(this.num)   //全局
+        //     }
+        // }
+        // obj.add();
+        // console.log(obj.num);
+        // console.log(num);
+        // const sub = obj.sub;    //obj.sub放到全局
+        // sub(); 
+
+        var num = 10
+        const obj = { num: 20 }
+        obj.fn = (function (num) {
+            this.num = num * 3
+            console.log(num, this.num)
+            num++
+            return function (n) {
+                this.num += n
+                num++
+                console.log(num)
+            }
+        })(obj.num)
+        var fn = obj.fn
+        fn(5)
+        obj.fn(10)
+        console.log(num, obj.num)
+        console.log([] + {})
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                fruits: ['🍌', "🍎", "橘子"],
+                flag: false
+            }
+        })
+
+    </script>
+</body>
+
+</html>

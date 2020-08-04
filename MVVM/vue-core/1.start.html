@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+    <div id="app">
+        {{info.xxx}} {{arr}}
+    </div>
+
+    <script src="../vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: 'hello',
+                info: {
+                    xxx: 'xxx'
+                },
+                arr: [1, 2, 3]
+            }
+        });
+        vm.info = { address: 'world' };
+        vm.$nextTick(() => {
+            console.log(vm.info);
+        })
+        vm.$watch('info.xxx', function (newValue, oldValue) {
+            console.log(newValue, oldValue);
+        })
+        // vm.info.xxx = 'hello world';
+        // let info = {
+        //     a: 'a'
+        // };
+        // info = { b: 'b' };
+        // console.log(info);
+        //vue实例上的方法
+        // vm.arr = [5, 6, 7];
+        // vm.arr = [1, 0, 9]; //数据变化后更新视图操作是异步的  渲染DOM延迟执行
+        // vm.$nextTick(() => {    //  更新完啊之后获取dom
+        //     console.log(vm.$el.innerHTML);
+        //     console.log(vm.$options);
+        // })
+
+        // vm.$set(vm.info, "hh", 'hhhh');
+    </script>
 </body>
+
 </html>

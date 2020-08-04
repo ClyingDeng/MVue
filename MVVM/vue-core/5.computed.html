@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model</title>
+</head>
+
+<body>
+    <div id="app">
+        {{fullName}} {{msg}}
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        //computed 具有缓存 先想计算属性能否实现
+        //watch 支持异步
+        let vm = new Vue({
+            data: {
+                msg: 'nihao',
+                firstName: 'deng',
+                lastName: 'ying',
+                fullName: ''
+            },
+            methods: {
+                getFullName() {
+                    this.fullName = this.firstName + this.lastName;
+                }
+            },
+            watch: {
+                firstName: {
+                    handler(newValue) {
+                        setTimeout(() => {
+                            this.getFullName();
+                        }, 1000)
+                    },
+                    immediate: true//deep:true
+                },
+                lastName() {
+                    this.getFullName();
+                }
+            },
+            // computed: { //  Object.defineProperty实现
+            //     fullName() {
+            //         return this.firstName + this.lastName;
+            //     }
+            // }
+        }).$mount('#app');
+
+    </script>
+</body>
+
+</html>

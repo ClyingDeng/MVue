@@ -22,6 +22,7 @@ function defineReactive(obj, key, value) {
             return value
         },
         set(val) {
+            observer(value); //如果设置的值是对象 需要再进行这个对象的监控
             console.log('数据更新了');
             value = val;
         }
@@ -44,6 +45,6 @@ arr.forEach(method => {
 obj.age.push(6);
 
 //如果属性不存在，默认后增加的内容 并不会刷新视图
-//数组调用push是无效的 Object.defineProperty不支持数组
+//数组调用push是无效的 Object.defineProperty不支持数组  数组长度监控不到
 // obj.age.length--;    数组不能通过长度修改，也不能通过数组的索引进行修改
 console.log(obj.age);

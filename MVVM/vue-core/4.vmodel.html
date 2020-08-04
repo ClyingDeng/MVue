@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <input type="text" :value="msg" @input="fn($event,'today')">{{msg}} -->
+        <!-- v-model是 @input + :value一个语法糖 -->
+        <input type="text" v-model="msg">{{msg}}
+        <!-- 修饰符 .number .trim(空格) -->
+        <input type="text" v-model.trim="val">{{val}}
+        <!-- 修饰符 键盘修饰符 鼠标修饰符 -->
+        <input type="text" @keyup.esc='fn1'>
+        <!-- 两个同时触发 -->
+        <input type="text" @keyup.ctrl.f1='fn1'>
+        <!-- 常用 .ctrl .esc .enter -->
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        //配置键盘code别名
+        Vue.config.keyCodes = {
+            'f1': 112
+        }
+        let vm = new Vue({
+            data: {
+                msg: 'nihao',
+                val: 0
+            },
+            methods: {
+                fn(e, a) {
+                    console.log(e.target.value, a)
+                    this.msg = e.target.value;
+                },
+                fn1() {
+                    console.log('111')
+
+                },
+            }
+        }).$mount('#app');
+
+    </script>
+</body>
+
+</html>
