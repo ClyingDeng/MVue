@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取值表达式</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 运算，取值，三元 -->
+        <div v-once>{{msg}}</div>
+
+        <div v-html="d"></div>
+        <!-- v-if控制dom  v-show控制的是样式 -->
+        <!-- v-show不支持template，false时不会消失 -->
+        <template v-show="flag">
+            <div>123</div>
+        </template>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello',
+                d: '<h1>hhhh</h1>',
+                flag: false
+            }
+        })
+
+    </script>
+</body>
+
+</html>
